@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { MessageCircle, CheckCircle2, Loader2, ArrowRight } from 'lucide-react';
+import { MessageCircle, CheckCircle2, Loader2, ArrowRight, AlertCircle } from 'lucide-react';
 import { formatPrice, buildWhatsAppLink, buildOrderMessage } from '@/lib/utils';
 import type { Product, StoreSettings } from '@/lib/types';
 
@@ -18,6 +18,7 @@ export default function OrderTunnel({
   const [success, setSuccess] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
 
+  const isOutOfStock = product.stock !== undefined && product.stock !== null && product.stock <= 0;
   const total = product.prix * quantite;
   const isDirect = settings.ORDER_MODE === 'whatsapp_direct';
 
@@ -34,6 +35,8 @@ export default function OrderTunnel({
 
   const handleSubmitForm = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (isOutOfStock) return;
+
     setLoading(true);
     setErrorMsg('');
 
@@ -85,6 +88,37 @@ export default function OrderTunnel({
         <p className="text-sm text-[var(--color-text-muted)] max-w-md mx-auto">
           {settings.ORDER_SUCCESS_MSG}
         </p>
+      </div>
+    );
+  }
+
+  if (isOutOfStock) {
+    return (
+      <div className="rounded-2xl border border-red-500/20 bg-red-500/10 p-6 space-y-4">
+        <div className="flex items-center gap-3 text-red-400">
+          <AlertCircle className="w-6 h-6 shrink-0" />
+          <div>
+            <h4 className="font-bold text-base text-[var(--color-text)]">Produit Épuisé</h4>
+            <p className="text-xs text-[var(--color-text-muted)] mt-0.5">
+              Cet article est actuellement en rupture de stock.
+            </p>
+          </div>
+        </div>
+
+        {settings.WHATSAPP_NUMBER && (
+          <a
+            href={buildWhatsAppLink(
+              settings.WHATSAPP_NUMBER,
+              `Bonjour, je souhaite être informé du réapprovisionnement pour : ${product.nom}`
+            )}
+            target="_blank"
+            rel="noreferrer"
+            className="w-full py-3.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-2)] text-[var(--color-text)] font-semibold text-sm flex items-center justify-center gap-2 hover:border-[var(--color-accent)] transition-all"
+          >
+            <MessageCircle className="w-4 h-4 text-[var(--color-accent)]" />
+            <span>M'alerter lors du réassort via WhatsApp</span>
+          </a>
+        )}
       </div>
     );
   }
