@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { ShoppingBag } from 'lucide-react';
 import { formatPrice } from '@/lib/utils';
 import type { Product } from '@/lib/types';
@@ -18,11 +19,12 @@ export default function ProductCard({
       className="group flex flex-col rounded-2xl overflow-hidden border border-[var(--color-border)] bg-[var(--color-surface-1)] hover:border-[var(--color-accent)]/50 transition-all duration-300"
     >
       <div className="relative aspect-square w-full overflow-hidden bg-[var(--color-surface-2)]">
-        <img
+        <Image
           src={mainImage}
           alt={product.nom}
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-          loading="lazy"
+          fill
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+          className="object-cover group-hover:scale-105 transition-transform duration-500"
         />
         {product.stock <= 0 && (
           <div className="absolute top-3 right-3 px-2.5 py-1 rounded-full bg-red-600/90 text-white text-xs font-bold uppercase tracking-wider backdrop-blur-sm">

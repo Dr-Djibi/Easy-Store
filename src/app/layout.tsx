@@ -11,7 +11,7 @@ export async function generateMetadata(): Promise<Metadata> {
       default: settings.STORE_NAME,
       template: `%s | ${settings.STORE_NAME}`,
     },
-    description: settings.STORE_BANNER_SUBTITLE || 'Boutique en ligne Menma Store.',
+    description: settings.STORE_BANNER_SUBTITLE || `Boutique en ligne ${settings.STORE_NAME}.`,
   };
 }
 

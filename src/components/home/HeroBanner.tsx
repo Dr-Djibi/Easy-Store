@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { ArrowDown, Sparkles } from 'lucide-react';
 import type { StoreSettings } from '@/lib/types';
 
@@ -7,10 +8,13 @@ export default function HeroBanner({ settings }: { settings: StoreSettings }) {
     <section className="relative min-h-[70vh] sm:min-h-[80vh] flex items-center justify-center overflow-hidden px-4 py-16">
       {settings.STORE_BANNER_URL ? (
         <div className="absolute inset-0 z-0">
-          <img
+          <Image
             src={settings.STORE_BANNER_URL}
             alt="Bannière"
-            className="w-full h-full object-cover"
+            fill
+            sizes="100vw"
+            className="object-cover"
+            priority
           />
           <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-bg)] via-[var(--color-bg)]/80 to-[var(--color-bg)]/40" />
         </div>

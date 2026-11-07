@@ -16,13 +16,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     .from('products')
     .select('nom, description, images')
     .eq('slug', slug)
-    .single();
+    .maybeSingle();
 
   if (!product) return { title: 'Produit introuvable' };
 
   return {
     title: product.nom,
-    description: product.description || `Découvrez ${product.nom} sur Menma Store.`,
+    description: product.description || `Découvrez ${product.nom} sur Easy Store.`,
     openGraph: {
       images: product.images?.[0] ? [product.images[0]] : [],
     },
