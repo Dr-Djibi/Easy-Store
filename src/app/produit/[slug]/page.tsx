@@ -10,39 +10,47 @@ interface Props {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { slug } = await params;
-  const supabase = createPublicServerClient();
-  const { data: product } = await supabase
-    .from('products')
-    .select('nom, description, images')
-    .eq('slug', slug)
-    .single();
+  try {
+    const { slug } = await params;
+    const supabase = createPublicServerClient();
+    const { data: product } = await supabase
+      .from('products')
+      .select('nom, description, images')
+      .eq('slug', slug)
+      .maybeSingle();
 
-  if (!product) return { title: 'Produit introuvable' };
+    if (!product) return { title: 'Produit introuvable' };
 
-  return {
-    title: product.nom,
-    description: product.description || `Découvrez ${product.nom} sur Menma Store.`,
-    openGraph: {
-      images: product.images?.[0] ? [product.images[0]] : [],
-    },
-  };
+    return {
+      title: product.nom,
+      description: product.description || `Découvrez ${product.nom} sur Menma Store.`,
+      openGraph: {
+        images: product.images?.[0] ? [product.images[0]] : [],
+      },
+    };
+  } catch {
+    return { title: 'Produit introuvable' };
+  }
 }
 
 export default async function ProduitPage({ params }: Props) {
   const { slug } = await params;
   const settings = await getAllSettings();
-  const supabase = createPublicServerClient();
 
-  const { data: product } = await supabase
-    .from('products')
-    .select('*')
-    .eq('slug', slug)
-    .single();
+  try {
+    const supabase = createPublicServerClient();
+    const { data: product, error } = await supabase
+      .from('products')
+      .select('*')
+      .eq('slug', slug)
+      .maybeSingle();
 
-  if (!product || !product.actif) {
+    if (error || !product || !product.actif) {
+      notFound();
+    }
+
+    return <ProductPageClient product={product as Product} settings={settings} />;
+  } catch {
     notFound();
   }
-
-  return <ProductPageClient product={product as Product} settings={settings} />;
 }
