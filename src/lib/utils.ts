@@ -6,12 +6,12 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function formatPrice(prix: number, currency: string = 'GNF'): string {
-  const formatted = Math.round(prix).toLocaleString('fr-FR');
+  const formatted = Math.round(prix || 0).toLocaleString('fr-FR');
   return `${formatted} ${currency}`;
 }
 
 export function generateSlug(nom: string): string {
-  return nom
+  return (nom || '')
     .toLowerCase()
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '')
@@ -21,8 +21,8 @@ export function generateSlug(nom: string): string {
 }
 
 export function buildWhatsAppLink(phone: string, message: string): string {
-  const cleanPhone = phone.replace(/[^0-9]/g, '');
-  return `https://wa.me/${cleanPhone}?text=${encodeURIComponent(message)}`;
+  const cleanPhone = (phone || '').replace(/[^0-9]/g, '');
+  return `https://wa.me/${cleanPhone}?text=${encodeURIComponent(message || '')}`;
 }
 
 export function buildOrderMessage(
@@ -36,14 +36,18 @@ export function buildOrderMessage(
   }
 ): string {
   let fieldsFormatted = '';
-  for (const [key, val] of Object.entries(vars.champs)) {
-    fieldsFormatted += `• ${key} : ${val}\n`;
+  if (vars.champs && typeof vars.champs === 'object') {
+    for (const [key, val] of Object.entries(vars.champs)) {
+      fieldsFormatted += `• ${key} : ${val}\n`;
+    }
   }
 
-  return template
-    .replace(/{produit}/g, String(vars.produit))
-    .replace(/{quantite}/g, String(vars.quantite))
-    .replace(/{montant}/g, String(vars.montant))
-    .replace(/{devise}/g, vars.devise)
+  const tmpl = template || '🛍️ *Nouvelle commande Menma Store*\n\nProduit : {produit}\nQuantité : {quantite}\nTotal : {montant} {devise}\n\nCoordonnées :\n{champs}';
+
+  return tmpl
+    .replace(/{produit}/g, String(vars.produit || ''))
+    .replace(/{quantite}/g, String(vars.quantite || 1))
+    .replace(/{montant}/g, String(vars.montant || 0))
+    .replace(/{devise}/g, vars.devise || '')
     .replace(/{champs}/g, fieldsFormatted.trim());
 }
