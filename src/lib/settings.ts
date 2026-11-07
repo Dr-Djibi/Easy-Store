@@ -40,6 +40,15 @@ export async function getAllSettings(): Promise<StoreSettings> {
       map[item.key] = item.value;
     }
 
+    let parsedFields = defaultSettings.ORDER_FIELDS;
+    if (map.ORDER_FIELDS) {
+      try {
+        parsedFields = JSON.parse(map.ORDER_FIELDS);
+      } catch (err) {
+        console.warn('Erreur parsing ORDER_FIELDS:', err);
+      }
+    }
+
     return {
       STORE_NAME: map.STORE_NAME || defaultSettings.STORE_NAME,
       STORE_LOGO_URL: map.STORE_LOGO_URL || defaultSettings.STORE_LOGO_URL,
@@ -53,7 +62,7 @@ export async function getAllSettings(): Promise<StoreSettings> {
       STORE_TIKTOK: map.STORE_TIKTOK || defaultSettings.STORE_TIKTOK,
       CURRENCY: map.CURRENCY || defaultSettings.CURRENCY,
       ORDER_MODE: (map.ORDER_MODE as 'whatsapp_form' | 'whatsapp_direct') || defaultSettings.ORDER_MODE,
-      ORDER_FIELDS: map.ORDER_FIELDS ? JSON.parse(map.ORDER_FIELDS) : defaultSettings.ORDER_FIELDS,
+      ORDER_FIELDS: parsedFields,
       ORDER_WHATSAPP_MSG: map.ORDER_WHATSAPP_MSG || defaultSettings.ORDER_WHATSAPP_MSG,
       ORDER_SUCCESS_MSG: map.ORDER_SUCCESS_MSG || defaultSettings.ORDER_SUCCESS_MSG,
       FOOTER_TEXT: map.FOOTER_TEXT || defaultSettings.FOOTER_TEXT,

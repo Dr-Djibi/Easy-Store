@@ -10,11 +10,13 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Champs obligatoires manquants.' }, { status: 400 });
     }
 
+    const cleanProductId = typeof product_id === 'string' && product_id.trim().length > 0 ? product_id.trim() : null;
+
     const supabase = createServerClient();
     const { data, error } = await supabase
       .from('orders')
       .insert({
-        product_id: product_id || null,
+        product_id: cleanProductId,
         product_nom,
         product_prix: Number(product_prix) || 0,
         quantite: Number(quantite) || 1,
