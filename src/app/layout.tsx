@@ -21,11 +21,11 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   const settings = await getAllSettings();
-  const themeClass = settings.THEME ? `theme-${settings.THEME}` : 'theme-dark-gold';
+  const themeClass = settings.THEME ? `theme-${settings.THEME}` : 'theme-light-minimal';
 
   return (
-    <html lang="fr" className={themeClass}>
-      <body className="min-h-screen flex flex-col antialiased bg-[var(--color-bg)] text-[var(--color-text)]">
+    <html lang="fr" className={themeClass} suppressHydrationWarning>
+      <body className="min-h-screen flex flex-col antialiased bg-[var(--color-bg)] text-[var(--color-text)] transition-colors selection:bg-[var(--color-accent)] selection:text-white">
         <Header settings={settings} />
         <div className="flex-1">
           {children}

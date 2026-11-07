@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { MessageCircle, Phone } from 'lucide-react';
+import { MessageCircle, Phone, ArrowUpRight } from 'lucide-react';
 import type { StoreSettings } from '@/lib/types';
 
 function InstagramIcon({ className = "w-5 h-5" }: { className?: string }) {
@@ -40,34 +40,41 @@ function FacebookIcon({ className = "w-5 h-5" }: { className?: string }) {
 
 export default function Footer({ settings }: { settings: StoreSettings }) {
   return (
-    <footer className="border-t border-[var(--color-border)] bg-[var(--color-surface-1)] py-12 px-4 mt-20">
-      <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
-        <div>
-          <h3 className="font-bold text-lg text-[var(--color-text)]">{settings.STORE_NAME}</h3>
-          <p className="text-sm text-[var(--color-text-muted)] mt-1 max-w-sm">
-            {settings.STORE_BANNER_SUBTITLE || 'Votre boutique de référence en ligne.'}
+    <footer className="border-t border-[var(--color-border)] bg-[var(--color-surface-1)] py-14 px-4 mt-24 transition-colors">
+      <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-8 text-center md:text-left">
+        {/* IDENTITÉ */}
+        <div className="space-y-2">
+          <div className="flex items-center justify-center md:justify-start gap-2">
+            <span className="font-black text-xl text-[var(--color-text)] tracking-tight">
+              {settings.STORE_NAME}
+            </span>
+          </div>
+          <p className="text-sm text-[var(--color-text-muted)] max-w-sm leading-relaxed">
+            {settings.STORE_BANNER_SUBTITLE || 'Votre boutique de référence en ligne taillée pour l\'Afrique.'}
           </p>
         </div>
 
-        <div className="flex items-center gap-4">
+        {/* LIENS SOCIAUX ET MESSAGERIE */}
+        <div className="flex items-center gap-3">
           {settings.WHATSAPP_NUMBER && (
             <a
               href={`https://wa.me/${settings.WHATSAPP_NUMBER.replace(/\D/g, '')}`}
               target="_blank"
               rel="noreferrer"
-              className="w-10 h-10 rounded-full border border-[var(--color-border)] flex items-center justify-center text-[var(--color-accent)] hover:border-[var(--color-accent)] transition-colors"
-              title="WhatsApp"
+              className="px-4 py-2.5 rounded-2xl border border-emerald-500/30 bg-emerald-500/10 text-emerald-600 font-bold text-xs flex items-center gap-2 hover:bg-emerald-500/20 transition-all shadow-xs"
+              title="Discuter sur WhatsApp"
             >
-              <MessageCircle className="w-5 h-5" />
+              <MessageCircle className="w-4 h-4" />
+              <span>WhatsApp Direct</span>
             </a>
           )}
           {settings.STORE_PHONE && (
             <a
               href={`tel:${settings.STORE_PHONE}`}
-              className="w-10 h-10 rounded-full border border-[var(--color-border)] flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors"
+              className="w-10 h-10 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface-2)] flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:border-[var(--color-accent)] transition-all shadow-xs"
               title="Téléphone"
             >
-              <Phone className="w-5 h-5" />
+              <Phone className="w-4 h-4" />
             </a>
           )}
           {settings.STORE_INSTAGRAM && (
@@ -75,10 +82,10 @@ export default function Footer({ settings }: { settings: StoreSettings }) {
               href={settings.STORE_INSTAGRAM}
               target="_blank"
               rel="noreferrer"
-              className="w-10 h-10 rounded-full border border-[var(--color-border)] flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors"
+              className="w-10 h-10 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface-2)] flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:border-[var(--color-accent)] transition-all shadow-xs"
               title="Instagram"
             >
-              <InstagramIcon className="w-5 h-5" />
+              <InstagramIcon className="w-4 h-4" />
             </a>
           )}
           {settings.STORE_FACEBOOK && (
@@ -86,21 +93,24 @@ export default function Footer({ settings }: { settings: StoreSettings }) {
               href={settings.STORE_FACEBOOK}
               target="_blank"
               rel="noreferrer"
-              className="w-10 h-10 rounded-full border border-[var(--color-border)] flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors"
+              className="w-10 h-10 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface-2)] flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:border-[var(--color-accent)] transition-all shadow-xs"
               title="Facebook"
             >
-              <FacebookIcon className="w-5 h-5" />
+              <FacebookIcon className="w-4 h-4" />
             </a>
           )}
         </div>
       </div>
 
-      <div className="max-w-6xl mx-auto border-t border-[var(--color-border)]/50 mt-8 pt-6 flex flex-col sm:flex-row items-center justify-between text-xs text-[var(--color-text-muted)] gap-3">
+      <div className="max-w-6xl mx-auto border-t border-[var(--color-border)]/60 mt-10 pt-6 flex flex-col sm:flex-row items-center justify-between text-xs text-[var(--color-text-muted)] gap-4">
         <p>{settings.FOOTER_TEXT || `© ${new Date().getFullYear()} ${settings.STORE_NAME}. Tous droits réservés.`}</p>
-        <div className="flex gap-4">
-          <Link href="/contact" className="hover:underline">Contactez-nous</Link>
-          <span>•</span>
-          <Link href="/#produits" className="hover:underline">Tous les produits</Link>
+        <div className="flex items-center gap-6 font-semibold">
+          <Link href="/#produits" className="hover:text-[var(--color-text)] transition-colors">
+            Catalogue
+          </Link>
+          <Link href="/contact" className="hover:text-[var(--color-text)] transition-colors">
+            Support & Contact
+          </Link>
         </div>
       </div>
     </footer>
