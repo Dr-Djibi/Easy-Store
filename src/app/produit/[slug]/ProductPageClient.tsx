@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { ChevronLeft } from 'lucide-react';
 import ContentBlockRenderer from '@/components/product/ContentBlockRenderer';
@@ -33,11 +34,14 @@ export default function ProductPageClient({
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14 items-start">
         {/* Galerie */}
         <div className="space-y-4 sticky top-24">
-          <div className="aspect-square w-full rounded-2xl overflow-hidden border border-[var(--color-border)] bg-[var(--color-surface-1)]">
-            <img
+          <div className="aspect-square w-full rounded-2xl overflow-hidden border border-[var(--color-border)] bg-[var(--color-surface-1)] relative">
+            <Image
               src={images[activeImage]}
               alt={product.nom}
-              className="w-full h-full object-cover transition-all duration-300"
+              fill
+              sizes="(max-width: 1024px) 100vw, 50vw"
+              className="object-cover transition-all duration-300"
+              priority
             />
           </div>
 
@@ -47,13 +51,13 @@ export default function ProductPageClient({
                 <button
                   key={idx}
                   onClick={() => setActiveImage(idx)}
-                  className={`w-16 h-16 rounded-xl overflow-hidden border shrink-0 transition-all ${
+                  className={`w-16 h-16 rounded-xl overflow-hidden border shrink-0 transition-all relative ${
                     activeImage === idx
                       ? 'border-[var(--color-accent)] ring-2 ring-[var(--color-accent)]/30'
                       : 'border-[var(--color-border)] opacity-60 hover:opacity-100'
                   }`}
                 >
-                  <img src={img} alt="" className="w-full h-full object-cover" />
+                  <Image src={img} alt="" fill sizes="64px" className="object-cover" />
                 </button>
               ))}
             </div>

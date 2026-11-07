@@ -1,4 +1,4 @@
-# 🛒 Menma Store (Storefront Web)
+# 🛒 Easy Store (Storefront Web)
 
 Site web e-commerce ultra-rapide et responsive, conçu pour Next.js (App Router) et déployé sur Vercel.
 

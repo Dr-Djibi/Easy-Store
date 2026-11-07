@@ -3,7 +3,7 @@ import type { StoreSettings } from './types';
 
 export async function getAllSettings(): Promise<StoreSettings> {
   const defaultSettings: StoreSettings = {
-    STORE_NAME: 'Menma Store',
+    STORE_NAME: 'Easy Store',
     STORE_LOGO_URL: '',
     STORE_BANNER_URL: '',
     STORE_BANNER_TITLE: 'L\'Excellence & Le Style',
@@ -20,9 +20,9 @@ export async function getAllSettings(): Promise<StoreSettings> {
       { id: 'telephone', label: 'Numéro de téléphone', type: 'tel', required: true },
       { id: 'ville', label: 'Ville ou quartier', type: 'text', required: true }
     ],
-    ORDER_WHATSAPP_MSG: '🛍️ *Nouvelle commande Menma Store*\n\nProduit : {produit}\nQuantité : {quantite}\nTotal : {montant} {devise}\n\nCoordonnées :\n{champs}',
+    ORDER_WHATSAPP_MSG: '🛍️ *Nouvelle commande Easy Store*\n\nProduit : {produit}\nQuantité : {quantite}\nTotal : {montant} {devise}\n\nCoordonnées :\n{champs}',
     ORDER_SUCCESS_MSG: 'Votre commande a été transmise avec succès ! Nous vous redirigeons vers WhatsApp.',
-    FOOTER_TEXT: '© Menma Store. Tous droits réservés.',
+    FOOTER_TEXT: '© Easy Store. Tous droits réservés.',
     THEME: 'dark-gold',
     STORE_COLOR: '#facc15'
   };
