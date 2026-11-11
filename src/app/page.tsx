@@ -3,6 +3,7 @@ import { getAllSettings } from '@/lib/settings';
 import HeroBanner from '@/components/home/HeroBanner';
 import ProductGrid from '@/components/home/ProductGrid';
 import ReassuranceBar from '@/components/home/ReassuranceBar';
+import WhyEasyphy from '@/components/home/WhyEasyphy';
 import { Sparkles } from 'lucide-react';
 import type { Product } from '@/lib/types';
 
@@ -32,12 +33,14 @@ export default async function HomePage() {
     <main className="min-h-screen">
       <HeroBanner settings={settings} />
 
+      <WhyEasyphy />
+
       <section id="produits" className="max-w-6xl mx-auto px-4 py-16 scroll-mt-20">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10 pb-4 border-b border-[var(--color-border)]/60">
           <div>
             <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[var(--color-accent)] uppercase tracking-wider mb-2">
               <Sparkles className="w-3.5 h-3.5" />
-              Catalogue Zistore
+              Catalogue Easyphy
             </div>
             <h2 className="text-3xl sm:text-4xl font-black text-[var(--color-text)] tracking-tight">
               Nos Articles en Rayon

@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ChevronLeft, Sparkles, CheckCircle2 } from 'lucide-react';
+import { ChevronLeft, Sparkles, CheckCircle2, Share2, Check } from 'lucide-react';
 import ContentBlockRenderer from '@/components/product/ContentBlockRenderer';
 import RichDescriptionRenderer from '@/components/product/RichDescriptionRenderer';
 import OrderTunnel from '@/components/product/OrderTunnel';
@@ -21,6 +21,29 @@ export default function ProductPageClient({
     : ['https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&auto=format&fit=crop&q=80'];
 
   const [activeImage, setActiveImage] = useState(0);
+  const [copied, setCopied] = useState(false);
+
+  const handleShare = async () => {
+    const url = typeof window !== 'undefined' ? window.location.href : '';
+    const title = `${product.nom} | ${settings.STORE_NAME}`;
+    const text = `Découvrez ${product.nom} sur ${settings.STORE_NAME} !`;
+
+    if (navigator.share) {
+      try {
+        await navigator.share({ title, text, url });
+      } catch (err) {
+        // Ignorer si annulé par l'utilisateur
+      }
+    } else {
+      try {
+        await navigator.clipboard.writeText(url);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+      } catch (e) {
+        // Fallback
+      }
+    }
+  };
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8 sm:py-12">
@@ -84,10 +107,33 @@ export default function ProductPageClient({
         {/* DÉTAILS DU PRODUIT, TUNNEL WHATSAPP & DESCRIPTION */}
         <div className="space-y-8">
           <div>
-            <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[var(--color-accent)] uppercase tracking-wider mb-2">
-              <Sparkles className="w-3 h-3" />
-              Article Certifié Conforme
+            <div className="flex items-center justify-between gap-4 mb-2">
+              <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[var(--color-accent)] uppercase tracking-wider">
+                <Sparkles className="w-3 h-3" />
+                Article Certifié Conforme
+              </div>
+
+              {/* BOUTON PARTAGER 1-TAP (STYLE IMPECCABLE) */}
+              <button
+                type="button"
+                onClick={handleShare}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-1)] text-xs font-bold text-[var(--color-text)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition-all shadow-xs active:scale-95"
+                title="Partager cet article"
+              >
+                {copied ? (
+                  <>
+                    <Check className="w-3.5 h-3.5 text-emerald-500" />
+                    <span className="text-emerald-500">Lien copié !</span>
+                  </>
+                ) : (
+                  <>
+                    <Share2 className="w-3.5 h-3.5" />
+                    <span>Partager</span>
+                  </>
+                )}
+              </button>
             </div>
+
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-[var(--color-text)] tracking-tight leading-tight">
               {product.nom}
             </h1>
